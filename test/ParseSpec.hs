@@ -31,11 +31,13 @@ parserTest = do
         app2  = App varX1 varX2
         app3  = App varX (App varX1 varX2)
         app4  = App (App varX varX1) varX2
+        app5  = App (App varX varX1) varX2
     check termP "(x x1)" app1
     check termP "(x     x1)" app1
     check termP "(x1 x2)" app2
     check termP "(x (x1 x2))" app3
     check termP "((x x1) x2)" app4
+    check termP "(((x x1) x2))" app5
     
   it "should test lam parser" $ do
     let lam1 = Lam "x" varX

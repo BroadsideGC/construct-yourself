@@ -30,12 +30,19 @@ parserTest = do
   it "#13" $ checkWithEval parse "T && (100 < 42)" $ BLit False
   it "#14" $ checkWithEval parse "T && F" $ BLit False
   it "#15" $ checkWithEval parse "3 < 4" $ BLit True
-  it "#16" $ checkWithEval parse "3 + 42" $ ILit 45
+  it "#16" $ checkWithEval parse "( 3 ) + 42" $ ILit 45
   it "#17" $ checkWithEval parse "3 + 2 + 1" $ ILit 6
   it "#18" $ checkWithEval parse "(3 + 2) + 1" $ ILit 6
   it "#19" $ checkWithEval parse "3 + 42 < 43" $ BLit False
   it "#20" $ checkWithEval parse "42 + 2 < 49 && T" $ BLit True
-
+  it "#21" $ checkWithEval parse "(((  42            ) )) + 2 < 49 && T" $ BLit True
+  it "#22" $ checkWithEval parse "     (    (  (  42            ) )) + 2 < 49 && T" $ BLit True
+  it "#23" $ checkWithEval parse "(((1 + 2) + (1 + 2 + (2))) < 49) && F" $ BLit False
+  it "#24" $ checkWithEval parse "((1 + 2) + (1 + 2 + (2))) < 49 && F" $ BLit False
+  it "#25" $ checkWithEval parse "((1 + 2) + (1 + 2 + (2))) < 49 && F && T" $ BLit False
+  it "#26" $ checkWithEval parse "((1 + 2) + (1 + 2 + (2))) < 49 && F && F" $ BLit False
+  it "#27" $ checkWithEval parse "((1 + 2) + (1 + 2 + (2))) < 49 && F && (T)" $ BLit False
+  it "#28" $ checkWithEval parse "((1 + 2) + (1 + 2 + (2))) < 49 && (F && F)" $ BLit False
 
 check :: (Eq a, Show a) => Parser a -> Text -> a -> Expectation
 check parser inputStr result =
