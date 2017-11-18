@@ -20,10 +20,10 @@ bLitP :: Parser (Lit Bool)
 bLitP =  try $ BLit <$> (\b -> if (b == 'T') then True else False) <$> (spacedP (char 'T' <|> char 'F'))
 
 iiLitP :: Parser (Expr Int)
-iiLitP = try $ Lit <$> iLitP
+iiLitP = Lit <$> iLitP
 
 bbLitP :: Parser (Expr Bool)
-bbLitP = try $ Lit <$> bLitP
+bbLitP = Lit <$> bLitP
 
 addP :: Parser (Expr Int)
 addP = try $ Add <$> (spacedP  ((bracketP parse) <|> iiLitP)) <*> (char '+' *> (spacedP parse))
